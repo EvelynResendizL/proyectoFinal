@@ -90,8 +90,7 @@ si no está en dicho formato, debemos hacer lo siguiente:
 \copy afluencia_metro(fecha, anio, mes, linea, estacion, afluencia) FROM 'C:/Users/evely/Downloads/ProyectoFinalBD/afluencia_utf8_limpio.csv' DELIMITER ',' CSV HEADER;
 ```
   
---Es importante que ponga la ruta correspondiente, no es necesariamente la que se muestra en el ejemplo
-
+-- Nota: Asegúrese de ajustar la ruta al archivo de acuerdo con la ubicación real en su computadora.
 
 
 
