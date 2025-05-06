@@ -64,7 +64,9 @@ CREATE DATABASE proyecto_metro;
 creamos la tabla que usaremos en el proyecto (continuamos en la consola psql)
 
 ```sql
+DROP TABLE IF EXISTS afluencia_metro;
 CREATE TABLE afluencia_metro (
+    id SERIAL PRIMARY KEY,     -- ID único por fila
     fecha DATE,
     anio INTEGER,
     mes TEXT,
