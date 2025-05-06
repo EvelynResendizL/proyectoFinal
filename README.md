@@ -1,5 +1,5 @@
 # proyectoFinal
-A) Introducción al conjunto de datos y al problema a estudiar considerando aspectos éticos del conjunto de datos empleado
+*A) Introducción al conjunto de datos y al problema a estudiar considerando aspectos éticos del conjunto de datos empleado*
 
 Descripción general de los datos
 
@@ -41,4 +41,9 @@ El conjunto de datos recolectado contiene la información sobre la afluencia dia
 equipo?
 
 - ¿Qué consideraciones éticas conlleva el análisis y explotación de dichos datos?
-  
+
+
+*B) Carga inicial y análisis preliminar*
+ CARGA INICIAL:
+
+
