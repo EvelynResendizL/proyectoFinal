@@ -44,6 +44,7 @@ equipo?
 
 
 *B) Carga inicial y análisis preliminar*
- CARGA INICIAL:
+
+1.- Carga inicial
 
 
