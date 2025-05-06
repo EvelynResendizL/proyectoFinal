@@ -1,5 +1,5 @@
 # proyectoFinal
-*A) Introducción al conjunto de datos y al problema a estudiar considerando aspectos éticos del conjunto de datos empleado*
+**A) Introducción al conjunto de datos y al problema a estudiar considerando aspectos éticos del conjunto de datos empleado**
 
 Descripción general de los datos
 
@@ -16,11 +16,17 @@ El conjunto de datos recolectado contiene la información sobre la afluencia dia
 - ¿Cuántas tuplas y cuántos atributos tiene el set de datos?
   El dataset contiene aproximadamente 1048575 registros y 6 atributos, los cuales son :
   1.-fecha
+  
   2.- anio
+  
   3.- mes
+  
   4.- linea
+  
   5.- estacion
+  
   6.- afluencia
+  
   (la calidad y consistencia de los datos se analizan a detalle en la sección C) Y D))
 - ¿Qué significa cada atributo del set?
   fecha: Día exacto del registro.
@@ -34,7 +40,7 @@ El conjunto de datos recolectado contiene la información sobre la afluencia dia
 - ¿Qué atributos son categóricos?
   linea, mes
 - ¿Qué atributos son de tipo texto?
-- linea, mes, estacion
+  linea, mes, estacion
 - ¿Qué atributos son de tipo temporal y/o fecha?
   fecha
 - ¿Cuál es el objetivo buscado con el set de datos? ¿Para qué se usará por el
@@ -43,8 +49,37 @@ equipo?
 - ¿Qué consideraciones éticas conlleva el análisis y explotación de dichos datos?
 
 
-*B) Carga inicial y análisis preliminar*
+**B) Carga inicial y análisis preliminar**
+
 
 1.- Carga inicial
+
+*Paso 1:* Desde la terminal psql, creamos la base de datos y nos conctamos:
+```sql
+CREATE DATABASE proyecto_metro;
+\c proyecto_metro
+```
+
+*Paso 2:* Una vez conectados a la base de datos *afluencia_metro*, 
+creamos la tabla que usaremos en el proyecto (continuamos en la consola psql)
+
+```sql
+CREATE TABLE afluencia_metro (
+    fecha DATE,
+    anio INTEGER,
+    mes TEXT,
+    linea TEXT,
+    estacion TEXT,
+    afluencia INTEGER
+);
+```
+
+*Paso 3:* Es fundamental que una vez descargado el CSV, verfiquemos que está en formato UTF-8; 
+si no está en dicho formato, debemos hacer lo siguiente: 
+
+
+
+
+
 
 
