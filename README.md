@@ -1,6 +1,8 @@
 # proyectoFinal
 A) Introducción al conjunto de datos y al problema a estudiar considerando aspectos éticos del conjunto de datos empleado
+
 Descripción general de los datos
+
 El conjunto de datos recolectado contiene la información sobre la afluencia diaria registrada en las distintas estaciones del metro de la Ciudad de México. Dichos datos están divididos por línea y fecha. Los datos incluyen el número de personas que ingresaron al metro cada día, dividido por estación desde el año 2010 hasta el 2024 
 - ¿Quién los recolecta?
   Los datos son recolectados por el Gobierno de la Ciudad de México, a través de la Secretaría de Movilidad (SEMOVI) y el Sistema de Transporte Colectivo (STC Metro)
