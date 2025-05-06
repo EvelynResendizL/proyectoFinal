@@ -17,6 +17,6 @@ CREATE TABLE afluencia_metro (
 
 --Código para cargar los datos desde el CSV 
 --Es importante que el archivo se encuntre en UTF-8
-\copy afluencia_metro
-FROM 'C:/Users/evely/Downloads/ProyectoFinalBD/afluencia_utf8_limpio.csv' --Aquí se añade su ruta correspondiente 
-DELIMITER ',' CSV HEADER;
+\copy afluencia_metro(fecha, anio, mes, linea, estacion, afluencia) FROM 'C:/Users/evely/Downloads/ProyectoFinalBD/afluencia_utf8_limpio.csv' DELIMITER ',' CSV HEADER;
+
+-- En donde dice *'C:/Users/evely/Downloads/ProyectoFinalBD/afluencia_utf8_limpio.csv'* debe de usted poner su ruta correspondiente
