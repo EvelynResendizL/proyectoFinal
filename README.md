@@ -77,6 +77,19 @@ CREATE TABLE afluencia_metro (
 *Paso 3:* Es fundamental que una vez descargado el CSV, verfiquemos que está en formato UTF-8; 
 si no está en dicho formato, debemos hacer lo siguiente: 
 
+- Debemos abrir el .csv en Excel
+- Damos click en Archivo--> Guardar como
+- En el campo "Tipo" hay que seleccionar **CSV UTF-8 (delimitado por comas)(.csv). Le asisnas un nombre y lo gradas.
+
+*Paso 4:* Cargamos el archivo con el siguiente código: 
+
+```sql
+\copy afluencia_metro
+FROM 'C:/ruta/a/afluencia_utf8.csv' --Aquí debe de poner su ruta
+DELIMITER ',' CSV HEADER;
+```
+  
+
 
 
 
