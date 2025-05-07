@@ -82,7 +82,7 @@ si no está en dicho formato, debemos hacer lo siguiente:
 
 - Debemos abrir el .csv en Excel
 - Damos click en Archivo--> Guardar como
-- En el campo "Tipo" hay que seleccionar **CSV UTF-8 (delimitado por comas)(.csv). Le asisnas un nombre y lo gradas.
+- En el campo "Tipo" hay que seleccionar **CSV UTF-8 (delimitado por comas)(.csv)**. Le asignas un nombre y lo gradas.
 
 *Paso 4:* Cargamos el archivo con el siguiente código: 
 
