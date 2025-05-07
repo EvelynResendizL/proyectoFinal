@@ -120,8 +120,32 @@ Conteo de valores nulos:
  Se hizo un conteo de valores nulos por columna.
 
 
-Inconsistencias:
- Se buscaron registros con afluencia negativa, años fuera de rango o errores tipográficos en estaciones y líneas.
+NOTA: Antes de comenzar con el análisis exploratorio, fue necesario hacer una limpieza general de los datos (ver Parte C), ya que había errores de escritura y registros duplicados que podían alterar los resultados.
+
+
+**C) Limpieza de datos**
+
+Para trabajar bien con el dataset, primero hubo que revisarlo y limpiarlo. A lo largo de esta etapa, se encontraron varios detalles que podrían causar problemas en el analisis de datos, así que realizamos los ajustes correspondientes. Todo el código que usé está guardado en el archivo Scripts/limpieza_datos.sql.
+
+Corrección de nombres de líneas:
+Había muchos registros donde el nombre de la línea estaba mal escrito, por ejemplo lnea 1 o linea a, lo cual hacía que algunas líneas se contarán más veces de las que realmente hay. Cambiamos todos esos casos por una versión estandarizada con mayúscula al inicio.
+
+Corrección de nombres de estaciones:
+También encontramos varios errores en los nombres de las estaciones. Había palabras con letras faltantes, acentos mal codificados, o inconsistencias, por ello, actualizamos cada una con UPDATE, hasta que todas quedaron con el mismo estilo y sin acentos, para facilitar las consultas.
+
+Eliminación de duplicados exactos:
+Para evitar que algunas filas fueran exactamente iguales en todos los campos: mismo día, misma línea, misma estación y misma afluencia, eliminamos los duplicados y nos quedamos con solo con una fila por grupo.
+
+Verificación de consistencia:
+Al final revisamos si los valores eran coherentes, es decir:
+
+- Que el año y el mes coincidieran con la fecha registrada.
+
+
+- Que no hubiera afluencia negativa.
+
+
+- Que no aparecieran años fuera del rango esperado.
 
 
 Todo el conjunto de consultas utilizadas para este análisis está documentado en el archivo *analisis_preliminar.sql* dentro del repositorio.
