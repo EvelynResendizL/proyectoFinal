@@ -93,6 +93,8 @@ si no está en dicho formato, debemos hacer lo siguiente:
 -- Nota: Asegúrese de ajustar la ruta al archivo de acuerdo con la ubicación real en su computadora.
 
 
+2.- Análisis preliminar
+
 
 
 
