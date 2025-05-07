@@ -98,3 +98,30 @@ si no está en dicho formato, debemos hacer lo siguiente:
 
 
 
+Para comprender mejor la estructura del conjunto de datos, se realizó un análisis preliminar utilizando consultas SQL. Este análisis nos ayudó a detectar problemas potenciales como duplicados, valores nulos, inconsistencias, y a entender la distribución de los datos. A continuación se resumen los puntos más relevantes:
+
+Valores únicos:
+ Se verificó si algunas columnas tienen valores únicos o repetidos.
+
+
+Mínimos y máximos de fechas:
+ Se identificó el rango de fechas del dataset, desde el año 2010 hasta el 2024. 
+Análisis de columnas numéricas:
+ Se calcularon mínimos, máximos y promedios de la variable afluencia.
+Duplicados en columnas categóricas:
+ Se detectaron combinaciones repetidas de línea y estación para una misma fecha, lo cual sugiere posibles duplicados en la captura de datos.
+
+
+Columnas redundantes:
+ Se comparó la columna mes con el mes extraído de la columna fecha para evaluar si realmente aporta valor o se puede derivar de la fecha.
+
+
+Conteo de valores nulos:
+ Se hizo un conteo de valores nulos por columna.
+
+
+Inconsistencias:
+ Se buscaron registros con afluencia negativa, años fuera de rango o errores tipográficos en estaciones y líneas.
+
+
+Todo el conjunto de consultas utilizadas para este análisis está documentado en el archivo *analisis_preliminar.sql* dentro del repositorio.
