@@ -13,7 +13,7 @@ UPDATE afluencia_metro SET linea = 'Línea A' WHERE linea ILIKE 'lnea A';
 UPDATE afluencia_metro SET linea = 'Línea B' WHERE linea ILIKE 'lnea B';
 UPDATE afluencia_metro SET linea = 'Línea 12' WHERE linea ILIKE 'lnea 12';
 
--- Unificar formato sin tildes para mayor facilidad de consulta 
+-- Unificar formato con mayúscula para mayor facilidad de consulta 
 UPDATE afluencia_metro SET linea = 'Línea 1' WHERE linea ILIKE 'linea 1';
 UPDATE afluencia_metro SET linea = 'Línea 2' WHERE linea ILIKE 'linea 2';
 UPDATE afluencia_metro SET linea = 'Línea 3' WHERE linea ILIKE 'linea 3';
@@ -60,7 +60,7 @@ SELECT * FROM afluencia_metro WHERE anio < 2000 OR anio > 2025;
 
 --4.-Limpieza para que el nombre de las estaciones sea correcta y sin incosistencias:
 
--- Script de limpieza para nombres de estaciones mal escritos (sin tildes)
+-- Script de limpieza para nombres de estaciones mal escritos (sin acentos para facilitar consulta)
 
 UPDATE afluencia_metro SET estacion = 'Agricola Oriental' WHERE estacion = 'Agrcola Oriental';
 UPDATE afluencia_metro SET estacion = 'Aquiles Serdan' WHERE estacion = 'Aquiles Serdn';
