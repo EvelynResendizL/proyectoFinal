@@ -10,7 +10,7 @@ El conjunto de datos recolectado contiene la información sobre la afluencia dia
   Monitorear el uso del transporte público
 - ¿Dónde se pueden obtener?
   Los datos están disponibles en el siguiente portal (portal oficial de Datos Abiertos de la CDMX):
-  https://datos.cdmx.gob.mx
+  https://datos.cdmx.gob.mx --> https://datos.cdmx.gob.mx/dataset/afluencia-diaria-del-metro-cdmx (se descarga el csv: 'Afluencia Diaria del Metro (Desglosada)') 
 - ¿Con qué frecuencia se actualizan?
   La base de datos se actualiza de forma mensual o bimestral
 - ¿Cuántas tuplas y cuántos atributos tiene el set de datos?
