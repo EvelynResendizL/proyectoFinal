@@ -89,7 +89,7 @@ si no está en dicho formato, debemos hacer lo siguiente:
 *Paso 4:* Cargamos el archivo con el siguiente código: 
 
 ```sql
-\copy afluencia_metro(fecha, anio, mes, linea, estacion, afluencia) FROM 'C:/Users/evely/Downloads/ProyectoFinalBD/afluencia_utf8_limpio.csv' DELIMITER ',' CSV HEADER;
+\copy afluencia_metro(fecha, anio, mes, linea, estacion, afluencia) FROM 'C:/Users/evely/Downloads/ProyectoFinalBD/afluencia_utf8.csv' DELIMITER ',' CSV HEADER;
 ```
   
 -- Nota: Asegúrese de ajustar la ruta al archivo de acuerdo con la ubicación real en su computadora.
