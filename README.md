@@ -64,16 +64,18 @@ CREATE DATABASE proyecto_metro;
 creamos la tabla que usaremos en el proyecto (continuamos en la consola psql)
 
 ```sql
-DROP TABLE IF EXISTS afluencia_metro;
-
 CREATE TABLE afluencia_metro (
-    id SERIAL PRIMARY KEY,           -- ID único por fila
-    fecha DATE NOT NULL,             -- Fecha del registro
-    anio INTEGER NOT NULL,           -- Año
-    mes VARCHAR(15) NOT NULL,        -- Mes 
-    linea VARCHAR(50) NOT NULL,      -- Línea del metrO
-    estacion VARCHAR(100) NOT NULL,  -- Estación del metro
-    afluencia INTEGER NOT NULL       -- Personas que ingresaron ese día
+    id SERIAL PRIMARY KEY,
+    fecha DATE NOT NULL,
+    anio INTEGER NOT NULL,
+    mes VARCHAR(15) NOT NULL,
+    linea VARCHAR(50) NOT NULL,
+    estacion VARCHAR(100) NOT NULL,
+    afluencia INTEGER NOT NULL,
+    dia_semana VARCHAR(15),
+    tipo_dia VARCHAR(15),
+    semana_del_anio INTEGER,
+    zona VARCHAR(20)
 );
 ```
 
