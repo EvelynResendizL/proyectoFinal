@@ -7,7 +7,7 @@
 import pandas as pd
 
 # Cargar archivo limpio
-file_path = "C:/Users/evely/Downloads/ProyectoFinalBD/afluencia_utf8.csv"
+file_path = "C:/Users/evely/Downloads/ProyectoFinalBD/afluencia_final_corregida.csv" --Aquí va tu ruta
 df = pd.read_csv(file_path)
 
 # Corregir columna con BOM si aplica
@@ -25,7 +25,7 @@ df['semana_del_anio'] = ((df['fecha'] - pd.to_datetime(df['fecha'].dt.year.astyp
 df['zona'] = 'otra'
 
 # Guardar el archivo enriquecido
-output_path ="C:/Users/evely/Downloads/ProyectoFinalBD/afluencia_utf8.csv"
+output_path ="C:/Users/evely/Downloads/ProyectoFinalBD/afluencia_final_corregida.csv" --Aquí va tu ruta
 df.to_csv(output_path, index=False)
 
 print(f"Archivo enriquecido guardado en: {output_path}")
