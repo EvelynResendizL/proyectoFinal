@@ -64,13 +64,16 @@ CREATE DATABASE proyecto_metro;
 creamos la tabla que usaremos en el proyecto (continuamos en la consola psql)
 
 ```sql
+DROP TABLE IF EXISTS afluencia_metro;
+
 CREATE TABLE afluencia_metro (
     id SERIAL PRIMARY KEY,
     fecha DATE NOT NULL,
-    anio INTEGER NOT NULL,
     mes VARCHAR(15) NOT NULL,
+    anio INTEGER NOT NULL,
     linea VARCHAR(50) NOT NULL,
     estacion VARCHAR(100) NOT NULL,
+    tipo_pago VARCHAR(50) NOT NULL,
     afluencia INTEGER NOT NULL,
     dia_semana VARCHAR(15),
     tipo_dia VARCHAR(15),
@@ -84,12 +87,27 @@ si no está en dicho formato, debemos hacer lo siguiente:
 
 - Debemos abrir el .csv en Excel
 - Damos click en Archivo--> Guardar como
-- En el campo "Tipo" hay que seleccionar **CSV UTF-8 (delimitado por comas)(.csv)**. Le asignas un nombre y lo gradas.
+- En el campo "Tipo" hay que seleccionar **CSV UTF-8 (delimitado por comas)(.csv)**. Le asignas un nombre y lo guardas, en nuestro caso fue: afluencia_final_corregida.csv.
 
-*Paso 4:* Cargamos el archivo con el siguiente código: 
+NOTA: En algunos casos, aunque el archivo esté en formato UTF-8, los caracteres aún se muestran de forma incorrecta. Por ello, realizamos una corrección manual utilizando la función Buscar y reemplazar en Excel, sustituyendo todos los caracteres afectados. Una vez corregidos, guardamos el archivo como: **CSV UTF-8 (delimitado por comas) (.csv)**.
+Para mayor comodidad del usuario, dejamos el archivo listo para los pasos posteriores en:
+Scripts/afluencia_final_corregida.csv
+
+*Paso 4*: Al archivo ya en formato UTF-8 hay que añadirle las columnas nuevas (que no estaban en el CSV original). Para eso, usamos el código de Phyton que se encuentra en la parte de Scripts (*Scripts/nuevas_tablas.py*). Al ejecutar, se añadieron las siguientes columnas:
+
+dia_semana: día de la semana derivado de la fecha.
+
+tipo_dia: si el día es Laboral o Fin de semana.
+
+semana_del_anio: número de semana natural (no ISO), calculado a partir del 1 de enero de cada año.
+
+zona: se dejó como 'otra' temporalmente, ya que su valor fue asignado posteriormente directamente en la base de datos (en el inciso C) se detalla a profundidad esa parte).
+Una vez ejecutado, se actualizará el CSV usado. 
+
+*Paso 5:* Cargamos el archivo con el siguiente código: 
 
 ```sql
-\copy afluencia_metro(fecha, anio, mes, linea, estacion, afluencia) FROM 'C:/Users/evely/Downloads/ProyectoFinalBD/afluencia_utf8.csv' DELIMITER ',' CSV HEADER;
+ \copy afluencia_metro(fecha, mes, anio, linea, estacion, tipo_pago, afluencia, dia_semana, tipo_dia, semana_del_anio, zona) FROM 'C:\\Users\\evely\\Downloads\\ProyectoFinalBD\\afluencia_final_corregida.csv' DELIMITER ',' CSV HEADER;
 ```
   
 -- Nota: Asegúrese de ajustar la ruta al archivo de acuerdo con la ubicación real en su computadora.
