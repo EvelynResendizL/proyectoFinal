@@ -118,7 +118,7 @@ Una vez ejecutado, se actualizará el CSV usado.
 
 
 
-Para comprender mejor la estructura del conjunto de datos, se realizó un análisis preliminar utilizando consultas SQL. Este análisis nos ayudó a detectar problemas potenciales como duplicados, valores nulos, inconsistencias, y a entender la distribución de los datos. A continuación se resumen los puntos más relevantes:
+Para comprender mejor la estructura del conjunto de datos, se realizó un análisis preliminar utilizando consultas SQL. Este análisis nos ayudó a detectar problemas potenciales como duplicados, inconsistencias, y a entender de una mejor forma de los datos. A continuación se resumen los puntos más relevantes:
 
 Valores únicos:
  Se verificó si algunas columnas tienen valores únicos o repetidos.
@@ -145,27 +145,43 @@ NOTA: Antes de comenzar con el análisis exploratorio, fue necesario hacer una l
 
 **C) Limpieza de datos**
 
-Para trabajar bien con el dataset, primero hubo que revisarlo y limpiarlo. A lo largo de esta etapa, se encontraron varios detalles que podrían causar problemas en el analisis de datos, así que realizamos los ajustes correspondientes. Todo el código que usé está guardado en el archivo Scripts/limpieza_datos.sql.
+Para trabajar bien con el dataset, primero hubo que revisarlo y limpiarlo. A lo largo de esta etapa, se encontraron varios detalles que podrían causar problemas en el analisis de datos, así que realizamos los ajustes correspondientes. Todo el código que usado está guardado en el archivo Scripts/limpieza_datos.sql.
+Las limpiezas realizadas fueron las siguientes:
 
-Corrección de nombres de líneas:
-Había muchos registros donde el nombre de la línea estaba mal escrito, por ejemplo lnea 1 o linea a, lo cual hacía que algunas líneas se contarán más veces de las que realmente hay. Cambiamos todos esos casos por una versión estandarizada con mayúscula al inicio.
+
+Correcciones manuales con Buscar y Reemplazar en Excel:
+Incluso después de guardar en UTF-8, algunos caracteres seguían mostrándose de forma incorrecta (letras cortadas, signos extraños).
+Se usó la herramienta de Buscar y reemplazar en Excel para corregir manualmente.
+
+Conversión del archivo a formato UTF-8
+El archivo original estaba en un formato que causaba errores al cargarlo en PostgreSQL (WIN1252), como caracteres ilegibles o símbolos extraños.
+Se abrió el archivo en Excel y se guardó como CSV UTF-8 (delimitado por comas).
+
+Creación de columnas adicionales
+Mediante un script en Python (ver scripts/nuevas_tables.py) se agregaron columnas útiles para el análisis:
+
+dia_semana: Día textual derivado de la fecha.
+
+tipo_dia: Laboral o fin de semana.
+
+semana_del_anio: Semana contada desde el 1 de enero.
+
+zona: Clasificación por estación (norte, sur, centro, oriente, poniente).
+
+
 
 Corrección de nombres de estaciones:
-También encontramos varios errores en los nombres de las estaciones. Había palabras con letras faltantes, acentos mal codificados, o inconsistencias, por ello, actualizamos cada una con UPDATE, hasta que todas quedaron con el mismo estilo y sin acentos, para facilitar las consultas.
+Encontramos varios errores en los nombres de las estaciones (a pesar de la limpieza previa). Había palabras con letras faltantes, acentos mal codificados, o inconsistencias, por ello, actualizamos cada una con UPDATE, hasta que todas quedaron con el mismo estilo y sin acentos, para facilitar las consultas.
 
-Eliminación de duplicados exactos:
-Para evitar que algunas filas fueran exactamente iguales en todos los campos: mismo día, misma línea, misma estación y misma afluencia, eliminamos los duplicados y nos quedamos con solo con una fila por grupo.
+Homogeneización de los nombres de estaciones:
+Para evitar inconsistencias en agrupaciones y facilitar las búsquedas, todos los nombres de las estaciones fueron estandarizados con mayúscula inicial, sin tildes ni caracteres especiales.
 
-Verificación de consistencia:
-Al final revisamos si los valores eran coherentes, es decir:
+Enriquecimiento de la columna *zona*
 
-- Que el año y el mes coincidieran con la fecha registrada.
+Clasificación manual de cada estación según su ubicación geográfica (norte, sur, centro, oriente o poniente).
 
-
-- Que no hubiera afluencia negativa.
+Esta clasificación fue construida estación por estación, con base en su ubicación en el mapa del metro.
 
 
-- Que no aparecieran años fuera del rango esperado.
 
-
-Todo el conjunto de consultas utilizadas para este análisis está documentado en el archivo *analisis_preliminar.sql* dentro del repositorio.
+Todo el conjunto de consultas utilizadas para este análisis está documentado en el archivo *limpieza_datos.sql* dentro del repositorio.
