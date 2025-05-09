@@ -198,13 +198,3 @@ UPDATE afluencia_metro SET zona = CASE
 
 END;
 
-
--- Valores negativos de afluencia, años fuera de rango, o desacuerdo entre la columna 'anio' y la fecha real
-SELECT *
-FROM afluencia_metro
-WHERE afluencia < 0
-   OR anio < 2000
-   OR anio > 2025
-   OR anio != EXTRACT(YEAR FROM fecha)
-     
-;-- Todo bien
