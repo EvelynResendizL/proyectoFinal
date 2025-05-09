@@ -1,114 +1,210 @@
---1.-Limpieza para que el nombre de las líneas sea correcta:
--- Corregir errores tipográficos
-UPDATE afluencia_metro SET linea = 'Línea 1' WHERE linea ILIKE 'lnea 1';
-UPDATE afluencia_metro SET linea = 'Línea 2' WHERE linea ILIKE 'lnea 2';
-UPDATE afluencia_metro SET linea = 'Línea 3' WHERE linea ILIKE 'lnea 3';
-UPDATE afluencia_metro SET linea = 'Línea 4' WHERE linea ILIKE 'lnea 4';
-UPDATE afluencia_metro SET linea = 'Línea 5' WHERE linea ILIKE 'lnea 5';
-UPDATE afluencia_metro SET linea = 'Línea 6' WHERE linea ILIKE 'lnea 6';
-UPDATE afluencia_metro SET linea = 'Línea 7' WHERE linea ILIKE 'lnea 7';
-UPDATE afluencia_metro SET linea = 'Línea 8' WHERE linea ILIKE 'lnea 8';
-UPDATE afluencia_metro SET linea = 'Línea 9' WHERE linea ILIKE 'lnea 9';
-UPDATE afluencia_metro SET linea = 'Línea A' WHERE linea ILIKE 'lnea A';
-UPDATE afluencia_metro SET linea = 'Línea B' WHERE linea ILIKE 'lnea B';
-UPDATE afluencia_metro SET linea = 'Línea 12' WHERE linea ILIKE 'lnea 12';
+-- Limpieza de estaciones
 
--- Unificar formato con mayúscula para mayor facilidad de consulta 
-UPDATE afluencia_metro SET linea = 'Línea 1' WHERE linea ILIKE 'linea 1';
-UPDATE afluencia_metro SET linea = 'Línea 2' WHERE linea ILIKE 'linea 2';
-UPDATE afluencia_metro SET linea = 'Línea 3' WHERE linea ILIKE 'linea 3';
-UPDATE afluencia_metro SET linea = 'Línea 4' WHERE linea ILIKE 'linea 4';
-UPDATE afluencia_metro SET linea = 'Línea 5' WHERE linea ILIKE 'linea 5';
-UPDATE afluencia_metro SET linea = 'Línea 6' WHERE linea ILIKE 'linea 6';
-UPDATE afluencia_metro SET linea = 'Línea 7' WHERE linea ILIKE 'linea 7';
-UPDATE afluencia_metro SET linea = 'Línea 8' WHERE linea ILIKE 'linea 8';
-UPDATE afluencia_metro SET linea = 'Línea 9' WHERE linea ILIKE 'linea 9';
-UPDATE afluencia_metro SET linea = 'Línea 12' WHERE linea ILIKE 'linea 12';
-UPDATE afluencia_metro SET linea = 'Línea A' WHERE linea ILIKE 'linea a';
-UPDATE afluencia_metro SET linea = 'Línea B' WHERE linea ILIKE 'linea b';
+UPDATE afluencia_metro
+SET estacion = CASE estacion
+  WHEN 'AgriÂ­cola Oriental' THEN 'Agricola Oriental'
+  WHEN 'Boulevard Puerto Aoreo' THEN 'Boulevard Puerto Aereo'
+  WHEN 'Centro Modico' THEN 'Centro Medico'
+  WHEN 'Deportivo OceaniÂ­a' THEN 'Deportivo Oceania'
+  WHEN 'EtiopiÂ­a/Plaza de la Transparencia' THEN 'Etiopia/Plaza de la Transparencia'
+  WHEN 'FerreriÂ­a/Arena Ciudad de Moxico' THEN 'Ferreria/Arena Ciudad de Mexico'
+  WHEN 'Gomez FariÂ­as' THEN 'Gomez Farias'
+  WHEN 'La Villa/BasiÂ­lica' THEN 'La Villa/Basilica'
+  WHEN 'NiÃ±os Horoes' THEN 'Ninos Heroes'
+  WHEN 'OceaniÂ­a' THEN 'Oceania'
+  WHEN 'OliÂ­mpica' THEN 'Olimpica'
+  WHEN 'PeÃ±on Viejo' THEN 'Penon Viejo'
+  WHEN 'Periforico Oriente' THEN 'Periferico Oriente'
+  WHEN 'RiÂ­o de los Remedios' THEN 'Rio de los Remedios'
+  WHEN 'San Andros Tomatlan' THEN 'San Andres Tomatlan'
+  WHEN 'San JoaquiÂ­n' THEN 'San Joaquin'
+  WHEN 'TasqueÃ±a' THEN 'Tasqueña'
+  WHEN 'Terminal Aorea' THEN 'Terminal Aerea'
+  WHEN 'Villa de Cortos' THEN 'Villa de Cortes'
+  WHEN 'Martin Cabrera' THEN 'Martin Carrera'
+  WHEN '%Refineri%' THEN 'Refineria'
+  WHEN 'Tasqueña' THEN 'Tasquena'
+  ELSE estacion
+END;
+
+--Agregar estaciones a zona :
+
+UPDATE afluencia_metro SET zona = CASE
+    WHEN estacion = 'Acatitla' THEN 'oriente'
+    WHEN estacion = 'Aculco' THEN 'oriente'
+    WHEN estacion = 'Agricola Oriental' THEN 'oriente'
+    WHEN estacion = 'Allende' THEN 'centro'
+    WHEN estacion = 'Apatlaco' THEN 'oriente'
+    WHEN estacion = 'Aquiles Serdan' THEN 'poniente'
+    WHEN estacion = 'Aragon' THEN 'oriente'
+    WHEN estacion = 'Atlalilco' THEN 'oriente'
+    WHEN estacion = 'Auditorio' THEN 'poniente'
+    WHEN estacion = 'Autobuses del Norte' THEN 'norte'
+    WHEN estacion = 'Balbuena' THEN 'oriente'
+    WHEN estacion = 'Balderas' THEN 'centro'
+    WHEN estacion = 'Barranca del Muerto' THEN 'poniente'
+    WHEN estacion = 'Bellas Artes' THEN 'centro'
+    WHEN estacion = 'Bondojito' THEN 'norte'
+    WHEN estacion = 'Bosque de Aragon' THEN 'oriente'
+    WHEN estacion = 'Boulevard Puerto Aereo' THEN 'oriente'
+    WHEN estacion = 'Buenavista' THEN 'centro'
+    WHEN estacion = 'Calle 11' THEN 'oriente'
+    WHEN estacion = 'Camarones' THEN 'poniente'
+    WHEN estacion = 'Canal de San Juan' THEN 'oriente'
+    WHEN estacion = 'Canal del Norte' THEN 'centro'
+    WHEN estacion = 'Candelaria' THEN 'centro'
+    WHEN estacion = 'Centro Medico' THEN 'centro'
+    WHEN estacion = 'Cerro de la Estrella' THEN 'oriente'
+    WHEN estacion = 'Chabacano' THEN 'centro'
+    WHEN estacion = 'Chapultepec' THEN 'poniente'
+    WHEN estacion = 'Chilpancingo' THEN 'centro'
+    WHEN estacion = 'Ciudad Azteca' THEN 'oriente'
+    WHEN estacion = 'Ciudad Deportiva' THEN 'oriente'
+    WHEN estacion = 'Colegio Militar' THEN 'poniente'
+    WHEN estacion = 'Constitucion de 1917' THEN 'oriente'
+    WHEN estacion = 'Constituyentes' THEN 'poniente'
+    WHEN estacion = 'Consulado' THEN 'norte'
+    WHEN estacion = 'Copilco' THEN 'sur'
+    WHEN estacion = 'Coyoacan' THEN 'sur'
+    WHEN estacion = 'Coyuya' THEN 'oriente'
+    WHEN estacion = 'Cuatro Caminos' THEN 'poniente'
+    WHEN estacion = 'Cuauhtemoc' THEN 'centro'
+    WHEN estacion = 'Cuitlahuac' THEN 'poniente'
+    WHEN estacion = 'Culhuacan' THEN 'oriente'
+    WHEN estacion = 'Deportivo 18 de Marzo' THEN 'norte'
+    WHEN estacion = 'Deportivo Oceania' THEN 'oriente'
+    WHEN estacion = 'Division del Norte' THEN 'sur'
+    WHEN estacion = 'Doctores' THEN 'centro'
+    WHEN estacion = 'Ecatepec' THEN 'oriente'
+    WHEN estacion = 'Eduardo Molina' THEN 'norte'
+    WHEN estacion = 'Eje Central' THEN 'centro'
+    WHEN estacion = 'El Rosario' THEN 'poniente'
+    WHEN estacion = 'Ermita' THEN 'oriente'
+    WHEN estacion = 'Escuadron 201' THEN 'oriente'
+    WHEN estacion = 'Etiopia/Plaza de la Transparencia' THEN 'centro'
+    WHEN estacion = 'Eugenia' THEN 'sur'
+    WHEN estacion = 'Ferreria/Arena Ciudad de Mexico' THEN 'poniente'
+    WHEN estacion = 'Fray Servando' THEN 'centro'
+    WHEN estacion = 'Garibaldi/Lagunilla' THEN 'centro'
+    WHEN estacion = 'General Anaya' THEN 'sur'
+    WHEN estacion = 'Gomez Farias' THEN 'oriente'
+    WHEN estacion = 'Guelatao' THEN 'oriente'
+    WHEN estacion = 'Guerrero' THEN 'centro'
+    WHEN estacion = 'Hangares' THEN 'oriente'
+    WHEN estacion = 'Hidalgo' THEN 'centro'
+    WHEN estacion = 'Hospital 20 de Noviembre' THEN 'sur'
+    WHEN estacion = 'Hospital General' THEN 'centro'
+    WHEN estacion = 'Impulsora' THEN 'oriente'
+    WHEN estacion = 'Indios Verdes' THEN 'norte'
+    WHEN estacion = 'Instituto del Petroleo' THEN 'norte'
+    WHEN estacion = 'Insurgentes' THEN 'centro'
+    WHEN estacion = 'Insurgentes Sur' THEN 'sur'
+    WHEN estacion = 'Isabel la Catolica' THEN 'centro'
+    WHEN estacion = 'Iztacalco' THEN 'oriente'
+    WHEN estacion = 'Iztapalapa' THEN 'oriente'
+    WHEN estacion = 'Jamaica' THEN 'oriente'
+    WHEN estacion = 'Juanacatlan' THEN 'poniente'
+    WHEN estacion = 'Juarez' THEN 'centro'
+    WHEN estacion = 'La Paz' THEN 'oriente'
+    WHEN estacion = 'La Raza' THEN 'norte'
+    WHEN estacion = 'La Viga' THEN 'oriente'
+    WHEN estacion = 'La Villa/Basilica' THEN 'norte'
+    WHEN estacion = 'Lagunilla' THEN 'centro'
+    WHEN estacion = 'Lazaro Cardenas' THEN 'centro'
+    WHEN estacion = 'Lindavista' THEN 'norte'
+    WHEN estacion = 'Lomas Estrella' THEN 'oriente'
+    WHEN estacion = 'Los Reyes' THEN 'oriente'
+    WHEN estacion = 'Martin Carrera' THEN 'norte'
+    WHEN estacion = 'Merced' THEN 'centro'
+    WHEN estacion = 'Mexicaltzingo' THEN 'oriente'
+    WHEN estacion = 'Miguel Angel de Quevedo' THEN 'sur'
+    WHEN estacion = 'Misterios' THEN 'norte'
+    WHEN estacion = 'Mixcoac' THEN 'poniente'
+    WHEN estacion = 'Mixiuhca' THEN 'oriente'
+    WHEN estacion = 'Moctezuma' THEN 'oriente'
+    WHEN estacion = 'Morelos' THEN 'centro'
+    WHEN estacion = 'Muzquiz' THEN 'oriente'
+    WHEN estacion = 'Nativitas' THEN 'sur'
+    WHEN estacion = 'Nezahualcoyotl' THEN 'oriente'
+    WHEN estacion = 'Ninos Heroes' THEN 'centro'
+    WHEN estacion = 'Nopalera' THEN 'oriente'
+    WHEN estacion = 'Normal' THEN 'poniente'
+    WHEN estacion = 'Norte 45' THEN 'norte'
+    WHEN estacion = 'Obrera' THEN 'centro'
+    WHEN estacion = 'Observatorio' THEN 'poniente'
+    WHEN estacion = 'Oceania' THEN 'oriente'
+    WHEN estacion = 'Olimpica' THEN 'sur'
+    WHEN estacion = 'Olivos' THEN 'oriente'
+    WHEN estacion = 'Panteones' THEN 'poniente'
+    WHEN estacion = 'Pantitlan' THEN 'oriente'
+    WHEN estacion = 'Parque de los Venados' THEN 'sur'
+    WHEN estacion = 'Patriotismo' THEN 'poniente'
+    WHEN estacion = 'Pen Viejo' THEN 'oriente'
+    WHEN estacion = 'Penon Viejo' THEN 'oriente'
+    WHEN estacion = 'Periferico Oriente' THEN 'oriente'
+    WHEN estacion = 'Pino Suarez' THEN 'centro'
+    WHEN estacion = 'Plaza Aragon' THEN 'oriente'
+    WHEN estacion = 'Polanco' THEN 'poniente'
+    WHEN estacion = 'Politecnico' THEN 'norte'
+    WHEN estacion = 'Popotla' THEN 'poniente'
+    WHEN estacion = 'Portales' THEN 'sur'
+    WHEN estacion = 'Potrero' THEN 'norte'
+    WHEN estacion = 'Puebla' THEN 'oriente'
+    WHEN estacion = 'Refineria' THEN 'poniente'
+    WHEN estacion = 'Revolucion' THEN 'centro'
+    WHEN estacion = 'Ricardo Flores Magon' THEN 'norte'
+    WHEN estacion = 'Rio de los Remedios' THEN 'oriente'
+    WHEN estacion = 'Romero Rubio' THEN 'oriente'
+    WHEN estacion = 'Salto del Agua' THEN 'centro'
+    WHEN estacion = 'San Andres Tomatlan' THEN 'oriente'
+    WHEN estacion = 'San Antonio' THEN 'poniente'
+    WHEN estacion = 'San Antonio Abad' THEN 'centro'
+    WHEN estacion = 'San Cosme' THEN 'poniente'
+    WHEN estacion = 'San Joaquin' THEN 'poniente'
+    WHEN estacion = 'San Juan de Letran' THEN 'centro'
+    WHEN estacion = 'San Lazaro' THEN 'oriente'
+    WHEN estacion = 'San Pedro de los Pinos' THEN 'poniente'
+    WHEN estacion = 'Santa Anita' THEN 'oriente'
+    WHEN estacion = 'Santa Marta' THEN 'oriente'
+    WHEN estacion = 'Sevilla' THEN 'poniente'
+    WHEN estacion = 'Tacuba' THEN 'poniente'
+    WHEN estacion = 'Tacubaya' THEN 'poniente'
+    WHEN estacion = 'Talisman' THEN 'norte'
+    WHEN estacion = 'Tasquena' THEN 'poniente'
+    WHEN estacion = 'Tepalcates' THEN 'oriente'
+    WHEN estacion = 'Tepito' THEN 'centro'
+    WHEN estacion = 'Terminal Aerea' THEN 'oriente'
+    WHEN estacion = 'Tezonco' THEN 'oriente'
+    WHEN estacion = 'Tezozomoc' THEN 'poniente'
+    WHEN estacion = 'Tlahuac' THEN 'oriente'
+    WHEN estacion = 'Tlaltenco' THEN 'oriente'
+    WHEN estacion = 'Tlatelolco' THEN 'centro'
+    WHEN estacion = 'UAM-Azcapotzalco' THEN 'poniente'
+    WHEN estacion = 'UAM-I' THEN 'oriente'
+    WHEN estacion = 'Universidad' THEN 'sur'
+    WHEN estacion = 'Valle Gomez' THEN 'centro'
+    WHEN estacion = 'Vallejo' THEN 'norte'
+    WHEN estacion = 'Velodromo' THEN 'oriente'
+    WHEN estacion = 'Viaducto' THEN 'centro'
+    WHEN estacion = 'Villa de Aragon' THEN 'oriente'
+    WHEN estacion = 'Villa de Cortes' THEN 'sur'
+    WHEN estacion = 'Viveros/Derechos Humanos' THEN 'sur'
+    WHEN estacion = 'Xola' THEN 'sur'
+    WHEN estacion = 'Zapata' THEN 'sur'
+    WHEN estacion = 'Zapotitlan' THEN 'oriente'
+    WHEN estacion = 'Zaragoza' THEN 'oriente'
+    WHEN estacion = 'Zocalo/Tenochtitlan' THEN 'centro'
+    ELSE zona
+
+END;
 
 
--- 2. Eliminación de duplicados exactos
-DELETE FROM afluencia_metro a
-USING (
-  SELECT MIN(id) AS id_valido
-  FROM afluencia_metro
-  GROUP BY fecha, linea, estacion, afluencia
-  HAVING COUNT(*) > 1
-) b
-WHERE a.fecha = (SELECT fecha FROM afluencia_metro WHERE id = b.id_valido)
-  AND a.linea = (SELECT linea FROM afluencia_metro WHERE id = b.id_valido)
-  AND a.estacion = (SELECT estacion FROM afluencia_metro WHERE id = b.id_valido)
-  AND a.afluencia = (SELECT afluencia FROM afluencia_metro WHERE id = b.id_valido)
-  AND a.id <> b.id_valido;
-
-
--- 3. Validaciones de consistencia
-
--- Verificación de que todos los años y meses coincidan con la fecha correspondiente
+-- Valores negativos de afluencia, años fuera de rango, o desacuerdo entre la columna 'anio' y la fecha real
 SELECT *
 FROM afluencia_metro
-WHERE anio != EXTRACT(YEAR FROM fecha)
-   OR TO_CHAR(fecha, 'Month') ILIKE mes || '%';
-
--- Verificación de que no hay valores de afluencia negativos
-SELECT * FROM afluencia_metro WHERE afluencia < 0;
-
--- Verificación de que no hay años fuera del rango esperado
-SELECT * FROM afluencia_metro WHERE anio < 2000 OR anio > 2025;
-
-
---4.-Limpieza para que el nombre de las estaciones sea correcta y sin incosistencias:
-
--- Script de limpieza para nombres de estaciones mal escritos (sin acentos para facilitar consulta)
-
-UPDATE afluencia_metro SET estacion = 'Agricola Oriental' WHERE estacion = 'Agrcola Oriental';
-UPDATE afluencia_metro SET estacion = 'Aquiles Serdan' WHERE estacion = 'Aquiles Serdn';
-UPDATE afluencia_metro SET estacion = 'Aragon' WHERE estacion = 'Aragn';
-UPDATE afluencia_metro SET estacion = 'Bosque de Aragon' WHERE estacion = 'Bosque de Aragn';
-UPDATE afluencia_metro SET estacion = 'Boulevard Puerto Aereo' WHERE estacion = 'Boulevard Puerto Areo';
-UPDATE afluencia_metro SET estacion = 'Centro Medico' WHERE estacion = 'Centro Mdico';
-UPDATE afluencia_metro SET estacion = 'Cuauhtemoc' WHERE estacion = 'Cuauhtmoc';
-UPDATE afluencia_metro SET estacion = 'Culhuacan' WHERE estacion = 'Culhuacn';
-UPDATE afluencia_metro SET estacion = 'Deportivo Oceania' WHERE estacion = 'Deportivo Oceana';
-UPDATE afluencia_metro SET estacion = 'Division del Norte' WHERE estacion = 'Divisin del Norte';
-UPDATE afluencia_metro SET estacion = 'Escuadron 201' WHERE estacion = 'Escuadrn 201';
-UPDATE afluencia_metro SET estacion = 'Etiopia/Plaza de la Transparencia' WHERE estacion = 'Etiopa/Plaza de la Transparencia';
-UPDATE afluencia_metro SET estacion = 'Ferreria/Arena Ciudad de Mexico' WHERE estacion = 'Ferrera/Arena Ciudad de Mxico';
-UPDATE afluencia_metro SET estacion = 'Gomez Farias' WHERE estacion = 'Gmez Faras';
-UPDATE afluencia_metro SET estacion = 'Gomez Farias' WHERE estacion = 'Gmez Farias';
-UPDATE afluencia_metro SET estacion = 'Lazaro Cardenas' WHERE estacion = 'Lzaro Crdenas';
-UPDATE afluencia_metro SET estacion = 'Miguel Angel de Quevedo' WHERE estacion = 'Miguel ngel de Quevedo';
-UPDATE afluencia_metro SET estacion = 'Muzquiz' WHERE estacion = 'Mzquiz';
-UPDATE afluencia_metro SET estacion = 'Ninos Heroes' WHERE estacion = 'Nios Hroes';
-UPDATE afluencia_metro SET estacion = 'Oceania' WHERE estacion = 'Oceana';
-UPDATE afluencia_metro SET estacion = 'Penon Viejo' WHERE estacion = 'Pen viejo';
-UPDATE afluencia_metro SET estacion = 'Refineria' WHERE estacion = 'Refinera';
-UPDATE afluencia_metro SET estacion = 'Revolucion' WHERE estacion = 'Revolucin';
-UPDATE afluencia_metro SET estacion = 'Ricardo Flores Magon' WHERE estacion = 'Ricardo Flores Magn';
-UPDATE afluencia_metro SET estacion = 'Rio de los Remedios' WHERE estacion = 'Ro de los Remedios';
-UPDATE afluencia_metro SET estacion = 'San Juan de Letran' WHERE estacion = 'San Juan de Letrn';
-UPDATE afluencia_metro SET estacion = 'San Lazaro' WHERE estacion = 'San Lzaro';
-UPDATE afluencia_metro SET estacion = 'Talisman' WHERE estacion = 'Talismn';
-UPDATE afluencia_metro SET estacion = 'Tlahuac' WHERE estacion = 'Tlhuac';
-UPDATE afluencia_metro SET estacion = 'Valle Gomez' WHERE estacion = 'Valle Gmez';
-UPDATE afluencia_metro SET estacion = 'Velodromo' WHERE estacion = 'Veldromo';
-UPDATE afluencia_metro SET estacion = 'Constitucion de 1917' WHERE estacion = 'Constitucin de 1917';
-UPDATE afluencia_metro SET estacion = 'Coyoacan' WHERE estacion = 'Coyoacn';
-UPDATE afluencia_metro SET estacion = 'Instituto del Petroleo' WHERE estacion = 'Instituto del Petrleo';
-UPDATE afluencia_metro SET estacion = 'Isabel la Catolica' WHERE estacion = 'Isabel la Catlica';
-UPDATE afluencia_metro SET estacion = 'Juanacatlan' WHERE estacion = 'Juanacatln';
-UPDATE afluencia_metro SET estacion = 'Juarez' WHERE estacion = 'Jurez';
-UPDATE afluencia_metro SET estacion = 'La Villa/Basilica' WHERE estacion = 'La Villa/Baslica';
-UPDATE afluencia_metro SET estacion = 'Martin Carrera' WHERE estacion = 'Martn Carrera';
-UPDATE afluencia_metro SET estacion = 'Nezahualcoyotl' WHERE estacion = 'Nezahualcyotl';
-UPDATE afluencia_metro SET estacion = 'Olimpica' WHERE estacion = 'Olmpica';
-UPDATE afluencia_metro SET estacion = 'Pantitlan' WHERE estacion = 'Pantitln';
-UPDATE afluencia_metro SET estacion = 'Plaza Aragon' WHERE estacion = 'Plaza Aragn';
-UPDATE afluencia_metro SET estacion = 'Politecnico' WHERE estacion = 'Politcnico';
-UPDATE afluencia_metro SET estacion = 'San Andres Tomatlan' WHERE estacion = 'San Andrs Tomatln';
-UPDATE afluencia_metro SET estacion = 'San Joaquin' WHERE estacion = 'San Joaqun';
-UPDATE afluencia_metro SET estacion = 'Villa de Aragon' WHERE estacion = 'Villa de Aragn';
-UPDATE afluencia_metro SET estacion = 'Villa de Cortes' WHERE estacion = 'Villa de Corts';
-UPDATE afluencia_metro SET estacion = 'Zapotitlan' WHERE estacion = 'Zapotitln';
-UPDATE afluencia_metro SET estacion = 'Zocalo/Tenochtitlan' WHERE estacion = 'Zcalo/Tenochtitlan';
+WHERE afluencia < 0
+   OR anio < 2000
+   OR anio > 2025
+   OR anio != EXTRACT(YEAR FROM fecha)
+     
+;-- Todo bien
