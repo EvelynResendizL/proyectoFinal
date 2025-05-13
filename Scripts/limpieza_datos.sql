@@ -198,3 +198,29 @@ UPDATE afluencia_metro SET zona = CASE
 
 END;
 
+
+--Eliminar registros duplicados exactos
+DELETE FROM afluencia_metro a
+USING (
+  SELECT MIN(id) AS id_valido
+  FROM afluencia_metro
+  GROUP BY fecha, linea, estacion, tipo_pago, afluencia
+  HAVING COUNT(*) > 1
+) b
+WHERE a.fecha = (SELECT fecha FROM afluencia_metro WHERE id = b.id_valido)
+  AND a.linea = (SELECT linea FROM afluencia_metro WHERE id = b.id_valido)
+  AND a.estacion = (SELECT estacion FROM afluencia_metro WHERE id = b.id_valido)
+  AND a.tipo_pago = (SELECT tipo_pago FROM afluencia_metro WHERE id = b.id_valido)
+  AND a.afluencia = (SELECT afluencia FROM afluencia_metro WHERE id = b.id_valido)
+  AND a.id <> b.id_valido;
+
+-- Valores negativos de afluencia, años fuera de rango, o que no coincidan  la columna 'anio' y 'mes' y la fecha real
+SELECT *
+FROM afluencia_metro
+WHERE afluencia < 0
+   OR anio < 2000
+   OR anio > 2025
+   OR anio != EXTRACT(YEAR FROM fecha)
+   OR LOWER(TRIM(mes)) != LOWER(TO_CHAR(fecha, 'Month'));
+     
+;-- Todo bien al parecer 
