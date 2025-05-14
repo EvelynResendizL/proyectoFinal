@@ -149,15 +149,15 @@ Para trabajar bien con el dataset, primero hubo que revisarlo y limpiarlo. A lo 
 Las limpiezas realizadas fueron las siguientes:
 
 
-Correcciones manuales con Buscar y Reemplazar en Excel:
+1.Correcciones manuales con Buscar y Reemplazar en Excel:
 Incluso después de guardar en UTF-8, algunos caracteres seguían mostrándose de forma incorrecta (letras cortadas, signos extraños).
 Se usó la herramienta de Buscar y reemplazar en Excel para corregir manualmente.
 
-Conversión del archivo a formato UTF-8
+2.Conversión del archivo a formato UTF-8
 El archivo original estaba en un formato que causaba errores al cargarlo en PostgreSQL (WIN1252), como caracteres ilegibles o símbolos extraños.
 Se abrió el archivo en Excel y se guardó como CSV UTF-8 (delimitado por comas).
 
-Creación de columnas adicionales
+3.Creación de columnas adicionales
 Mediante un script en Python (ver scripts/nuevas_tables.py) se agregaron columnas útiles para el análisis:
 
 dia_semana: Día textual derivado de la fecha.
@@ -170,17 +170,24 @@ zona: Clasificación por estación (norte, sur, centro, oriente, poniente).
 
 
 
-Corrección de nombres de estaciones:
+4.Corrección de nombres de estaciones:
 Encontramos varios errores en los nombres de las estaciones (a pesar de la limpieza previa). Había palabras con letras faltantes, acentos mal codificados, o inconsistencias, por ello, actualizamos cada una con UPDATE, hasta que todas quedaron con el mismo estilo y sin acentos, para facilitar las consultas.
 
-Homogeneización de los nombres de estaciones:
+5.Homogeneización de los nombres de estaciones:
 Para evitar inconsistencias en agrupaciones y facilitar las búsquedas, todos los nombres de las estaciones fueron estandarizados con mayúscula inicial, sin tildes ni caracteres especiales.
 
-Enriquecimiento de la columna *zona*
+6.Enriquecimiento de la columna *zona*
 
-Clasificación manual de cada estación según su ubicación geográfica (norte, sur, centro, oriente o poniente).
+7.Clasificación manual de cada estación según su ubicación geográfica (norte, sur, centro, oriente o poniente).
 
 Esta clasificación fue construida estación por estación, con base en su ubicación en el mapa del metro.
+
+8.Eliminación de duplicados:
+Se realizaron consultas para que, en caso de que hubiera, eliminar registros que tenían los mismos valores en: fecha, linea, estacion, tipo_pago y afluencia. Esto con el objetivo de no ocasionar distorciones en el análisis.
+
+9.Verificación de que los datos fueran válidos:
+
+Se hicieron consultas para eliminar, en caso de que hubiera, datos con: valores negativos de afluencia, años fuera de rango, o desacuerdo entre la columna 'anio' y 'mes' con la fecha real
 
 
 
