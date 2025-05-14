@@ -3,7 +3,7 @@
 
 Descripción general de los datos
 
-El conjunto de datos recolectado contiene la información sobre la afluencia diaria registrada en las distintas estaciones del metro de la Ciudad de México. Dichos datos están divididos por línea y fecha. Los datos incluyen el número de personas que ingresaron al metro cada día, dividido por estación desde el año 2010 hasta el 2024 
+El conjunto de datos recolectado contiene la información sobre la afluencia diaria registrada en las distintas estaciones del metro de la Ciudad de México. Cada registro indica el número total de personas que ingresaron a una estación en un día específico, asociado a una línea del sistema. Los datos abarcan un periodo que va desde el año 2010 hasta el 2025.
 - ¿Quién los recolecta?
   Los datos son recolectados por el Gobierno de la Ciudad de México, a través de la Secretaría de Movilidad (SEMOVI) y el Sistema de Transporte Colectivo (STC Metro)
 - ¿Cuál es el propósito de su recolección?
@@ -14,7 +14,8 @@ El conjunto de datos recolectado contiene la información sobre la afluencia dia
 - ¿Con qué frecuencia se actualizan?
   La base de datos se actualiza de forma mensual o bimestral
 - ¿Cuántas tuplas y cuántos atributos tiene el set de datos?
-  El dataset contiene aproximadamente 1048575 registros y 6 atributos, los cuales son :
+  El dataset contiene aproximadamente 1,048,575 registros y 6 atributos, los cuales son :
+  
   1.-fecha
   
   2.- anio
@@ -24,29 +25,58 @@ El conjunto de datos recolectado contiene la información sobre la afluencia dia
   4.- linea
   
   5.- estacion
+
+  6.- tipo_pago
   
-  6.- afluencia
+  7.- afluencia
+
+  Al integrar las columnas, obtenemos de igual forma los siguiente atributos (explicada en la parte B):
+
+  8.- dia_semana
+
+  9.- tipo_dia
+
+  10.-semana_del_anio
+
+  11.-zona 
+
   
   (la calidad y consistencia de los datos se analizan a detalle en la sección C) Y D))
+  
 - ¿Qué significa cada atributo del set?
+  
   fecha: Día exacto del registro.
   anio: Año (de la fecha recolectada).
   mes: Mes (de la fecha recolectada).
   linea: Línea del metro correspondiente.
   estacion: Nombre de la estación.
+  fecha_pago: forma en la que se paga para ingresar a las instalaciones del metro
   afluencia: Número de personas que ingresaron al metro ese día.
+  dia_semana: día de la semana.
+  tipo_dia: si el día es Laboral o Fin de semana.
+  semana_del_anio: número de semana natural (no ISO), calculado a partir del 1 de enero de cada año.
+  zona: Determina si la estación está en el norte, sur, oriente, poniente o centro 
+  
 - ¿Qué atributos son numéricos?
-  anio, afluencia 
+  anio, afluencia, semana_del_anio
+  
 - ¿Qué atributos son categóricos?
-  linea, mes
+  mes, linea, tipo_pago, dia_semana, tipo_dia, zona
+  
 - ¿Qué atributos son de tipo texto?
-  linea, mes, estacion
+  mes, linea, estacion, tipo_pago, dia_semana, tipo_dia, zona
+  
 - ¿Qué atributos son de tipo temporal y/o fecha?
   fecha
+  
 - ¿Cuál es el objetivo buscado con el set de datos? ¿Para qué se usará por el
-equipo?
+equipo? Desarrollar un modelo de datos limpio y normalizado que permita analizar, visualizar y predecir la afluencia diaria del metro de la Ciudad de México, para de esta forma mejorar las condiciones del mismo. 
+
 
 - ¿Qué consideraciones éticas conlleva el análisis y explotación de dichos datos?
+
+  1.- Toda la explotación de datos se realiza con fines académicos
+  2.-El proyecto parte del reconocimiento de que el transporte público es una herramienta de equidad social, que puede no respetar la dignidad de los usuarios.
 
 
 **B) Carga inicial y análisis preliminar**
@@ -54,13 +84,13 @@ equipo?
 
 1.- Carga inicial
 
-*Paso 1:* Desde la terminal psql, creamos la base de datos y nos conctamos:
+*Paso 1:* Desde la terminal psql, creamos la base de datos y nos conectamos:
 ```sql
 CREATE DATABASE proyecto_metro;
 \c proyecto_metro
 ```
 
-*Paso 2:* Una vez conectados a la base de datos *afluencia_metro*, 
+*Paso 2:* Una vez conectados a la base de datos *proyecto_metro*, 
 creamos la tabla que usaremos en el proyecto (continuamos en la consola psql)
 
 ```sql
@@ -68,13 +98,13 @@ DROP TABLE IF EXISTS afluencia_metro;
 
 CREATE TABLE afluencia_metro (
     id SERIAL PRIMARY KEY,
-    fecha DATE NOT NULL,
-    mes VARCHAR(15) NOT NULL,
-    anio INTEGER NOT NULL,
-    linea VARCHAR(50) NOT NULL,
-    estacion VARCHAR(100) NOT NULL,
-    tipo_pago VARCHAR(50) NOT NULL,
-    afluencia INTEGER NOT NULL,
+    fecha DATE,
+    mes VARCHAR(15),
+    anio INTEGER,
+    linea VARCHAR(50),
+    estacion VARCHAR(100),
+    tipo_pago VARCHAR(50),
+    afluencia INTEGER,
     dia_semana VARCHAR(15),
     tipo_dia VARCHAR(15),
     semana_del_anio INTEGER,
@@ -87,7 +117,7 @@ si no está en dicho formato, debemos hacer lo siguiente:
 
 - Debemos abrir el .csv en Excel
 - Damos click en Archivo--> Guardar como
-- En el campo "Tipo" hay que seleccionar **CSV UTF-8 (delimitado por comas)(.csv)**. Le asignas un nombre y lo guardas, en nuestro caso fue: afluencia_final_corregida.csv.
+- En el campo "Tipo" hay que seleccionar **CSV UTF-8 (delimitado por comas)(.csv)**. Le asignas un nombre y lo guardas, en nuestro caso fue: afluencia_final_corregida.csv
 
 NOTA: En algunos casos, aunque el archivo esté en formato UTF-8, los caracteres aún se muestran de forma incorrecta. Por ello, realizamos una corrección manual utilizando la función Buscar y reemplazar en Excel, sustituyendo todos los caracteres afectados. Una vez corregidos, guardamos el archivo como: **CSV UTF-8 (delimitado por comas) (.csv)**.
 Para mayor comodidad del usuario, dejamos el archivo listo para los pasos posteriores en:
@@ -110,7 +140,7 @@ Una vez ejecutado, se actualizará el CSV usado.
  \copy afluencia_metro(fecha, mes, anio, linea, estacion, tipo_pago, afluencia, dia_semana, tipo_dia, semana_del_anio, zona) FROM 'C:\\Users\\evely\\Downloads\\ProyectoFinalBD\\afluencia_final_corregida.csv' DELIMITER ',' CSV HEADER;
 ```
   
--- Nota: Asegúrese de ajustar la ruta al archivo de acuerdo con la ubicación real en su computadora.
+**-- Nota: Asegúrese de ajustar la ruta al archivo de acuerdo con la ubicación real en su computadora.**
 
 
 2.- Análisis preliminar
@@ -140,12 +170,15 @@ Conteo de valores nulos:
  Se hizo un conteo de valores nulos por columna.
 
 
-NOTA: Antes de comenzar con el análisis exploratorio, fue necesario hacer una limpieza general de los datos (ver Parte C), ya que había errores de escritura y registros duplicados que podían alterar los resultados.
+NOTA 1: Antes de comenzar con el análisis exploratorio, fue necesario hacer una limpieza general de los datos (ver Parte C), ya que había errores de escritura y registros duplicados que podían alterar los resultados.
+
+NOTA 2: El escript en donde se relizó el análisis preeliminar se encuentra en: Scripts/analisis_preliminar.sql
 
 
 **C) Limpieza de datos**
 
-Para trabajar bien con el dataset, primero hubo que revisarlo y limpiarlo. A lo largo de esta etapa, se encontraron varios detalles que podrían causar problemas en el analisis de datos, así que realizamos los ajustes correspondientes. Todo el código que usado está guardado en el archivo Scripts/limpieza_datos.sql.
+Para trabajar bien con el dataset, primero hubo que revisarlo y limpiarlo. A lo largo de esta etapa, se encontraron varios detalles que podrían causar problemas en el analisis de datos, así que realizamos los ajustes correspondientes. Todo el código realizado para llevar acabo esta tarea está guardado en el archivo: Scripts/limpieza_datos.sql
+
 Las limpiezas realizadas fueron las siguientes:
 
 
@@ -204,7 +237,7 @@ Todo el conjunto de consultas utilizadas para este análisis está documentado e
 
 *Diseño intuitivo inicial*
 
-Antes de aplicar una normalización formal, se propuso una descomposición inicial basada en la organización del archivo original `afluencia_metro.csv`. Esta versión inicial consideraba las siguientes entidades:
+Antes de aplicar una normalización formal, se propuso una descomposición inicial basada en la organización del archivo original `afluencia_final_corregida.csv`. Esta versión inicial consideraba las siguientes entidades:
 
 - Una tabla `afluencia`, con claves foráneas hacia las demás tablas y la cantidad de afluencia.
 - Una tabla `fecha`, que incluía tanto la fecha completa como atributos derivados tales como año, mes, día de la semana, tipo de día y semana del año.
