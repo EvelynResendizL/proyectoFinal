@@ -2,7 +2,7 @@
 
 -- Eliminar tablas anteriores si existen
 DROP TABLE IF EXISTS afluencia;
-DROP TABLE IF EXISTS nombre_linea;
+DROP TABLE IF EXISTS estacion_linea;
 DROP TABLE IF EXISTS estacion_info;
 DROP TABLE IF EXISTS fecha_metro;
 DROP TABLE IF EXISTS tipo_pago;
@@ -22,29 +22,31 @@ INSERT INTO fecha_metro (fecha, anio, mes, dia_semana, tipo_dia, semana_del_anio
 SELECT DISTINCT fecha, anio, mes, dia_semana, tipo_dia, semana_del_anio
 FROM afluencia_metro;
 
--- Crear tabla estacion_info (una fila por estación física)
+-- Crear tabla estacion_info
 CREATE TABLE estacion_info (
     id_estacion BIGSERIAL PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
-    zona VARCHAR(30)
+    zona VARCHAR(30),
+    CONSTRAINT unique_nombre_zona UNIQUE(nombre, zona)
 );
 
 INSERT INTO estacion_info (nombre, zona)
 SELECT DISTINCT estacion, zona
 FROM afluencia_metro;
 
--- Crear tabla nombre_linea (relación multivaluada estación ↔ línea)
-CREATE TABLE nombre_linea (
-    id_nombre_linea BIGSERIAL PRIMARY KEY,
-    nombre VARCHAR(100) NOT NULL,
+-- Crear tabla estacion_linea (relación multivaluada estación ↔ línea)
+CREATE TABLE estacion_linea (
+    id_estacion_linea BIGSERIAL PRIMARY KEY,
+    id_estacion INTEGER NOT NULL REFERENCES estacion_info(id_estacion),
     linea VARCHAR(30) NOT NULL
 );
 
-INSERT INTO nombre_linea (nombre, linea)
-SELECT DISTINCT estacion, linea
-FROM afluencia_metro;
+INSERT INTO estacion_linea (id_estacion, linea)
+SELECT DISTINCT e.id_estacion, a.linea
+FROM afluencia_metro a
+JOIN estacion_info e ON a.estacion = e.nombre AND a.zona = e.zona;
 
--- Crear tabla tipo_pago (catálogo)
+-- Crear tabla tipo_pago
 CREATE TABLE tipo_pago (
     id_pago BIGSERIAL PRIMARY KEY,
     nombre_tipo_pago VARCHAR(30) NOT NULL
@@ -57,9 +59,9 @@ FROM afluencia_metro;
 -- Crear tabla afluencia (tabla de hechos)
 CREATE TABLE afluencia (
     id_afluencia BIGSERIAL PRIMARY KEY,
-    id_fecha INTEGER REFERENCES fecha_metro(id_fecha),
-    id_estacion INTEGER REFERENCES estacion_info(id_estacion),
-    id_pago INTEGER REFERENCES tipo_pago(id_pago),
+    id_fecha INTEGER NOT NULL REFERENCES fecha_metro(id_fecha),
+    id_estacion INTEGER NOT NULL REFERENCES estacion_info(id_estacion),
+    id_pago INTEGER NOT NULL REFERENCES tipo_pago(id_pago),
     afluencia INTEGER NOT NULL
 );
 
@@ -74,23 +76,3 @@ FROM afluencia_metro a
 JOIN fecha_metro f ON a.fecha = f.fecha
 JOIN estacion_info e ON a.estacion = e.nombre AND a.zona = e.zona
 JOIN tipo_pago p ON a.tipo_pago = p.nombre_tipo_pago;
-
-
--- RESTRICCIONES ADICIONALES
-
-
--- 1. Asegurar unicidad del nombre de estación
-ALTER TABLE estacion_info
-ADD CONSTRAINT unique_nombre UNIQUE(nombre);
-
--- 2. Relacionar formalmente nombre_linea con estacion_info por nombre
-ALTER TABLE nombre_linea
-ADD CONSTRAINT fk_nombre FOREIGN KEY (nombre)
-REFERENCES estacion_info(nombre);
-
-
-SELECT DISTINCT estacion
-FROM afluencia_metro
-WHERE estacion NOT IN (
-  SELECT nombre FROM estacion_info
-);
