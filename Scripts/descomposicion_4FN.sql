@@ -1,6 +1,4 @@
--- SCRIPT SQL con tabla 'linea' para representar formalmente la relación muchos a muchos
-
--- Eliminar tablas anteriores si existen
+-- ELIMINAR TABLAS SI EXISTEN 
 DROP TABLE IF EXISTS afluencia;
 DROP TABLE IF EXISTS estacion_linea;
 DROP TABLE IF EXISTS linea;
@@ -8,7 +6,7 @@ DROP TABLE IF EXISTS estacion_info;
 DROP TABLE IF EXISTS fecha_metro;
 DROP TABLE IF EXISTS tipo_pago;
 
--- Crear tabla fecha_metro
+-- CREAR TABLA fecha_metro
 CREATE TABLE fecha_metro (
     id_fecha BIGSERIAL PRIMARY KEY,
     fecha DATE NOT NULL,
@@ -19,11 +17,7 @@ CREATE TABLE fecha_metro (
     semana_del_anio INTEGER
 );
 
-INSERT INTO fecha_metro (fecha, anio, mes, dia_semana, tipo_dia, semana_del_anio)
-SELECT DISTINCT fecha, anio, mes, dia_semana, tipo_dia, semana_del_anio
-FROM afluencia_metro;
-
--- Crear tabla estacion_info
+-- CREAR TABLA estacion_info
 CREATE TABLE estacion_info (
     id_estacion BIGSERIAL PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
@@ -31,52 +25,64 @@ CREATE TABLE estacion_info (
     CONSTRAINT unique_nombre_zona UNIQUE(nombre, zona)
 );
 
-INSERT INTO estacion_info (nombre, zona)
-SELECT DISTINCT estacion, zona
-FROM afluencia_metro;
-
--- Crear tabla linea (nueva entidad)
+-- CREAR TABLA linea
 CREATE TABLE linea (
     id_linea BIGSERIAL PRIMARY KEY,
     nombre VARCHAR(30) NOT NULL UNIQUE
 );
 
-INSERT INTO linea (nombre)
-SELECT DISTINCT linea
-FROM afluencia_metro;
-
--- Crear tabla estacion_linea (tabla intermedia)
+-- CREAR TABLA estacion_linea 
 CREATE TABLE estacion_linea (
     id_estacion_linea BIGSERIAL PRIMARY KEY,
-    id_estacion INTEGER NOT NULL REFERENCES estacion_info(id_estacion),
-    id_linea INTEGER NOT NULL REFERENCES linea(id_linea)
+    id_estacion BIGINT NOT NULL REFERENCES estacion_info(id_estacion),
+    id_linea BIGINT NOT NULL REFERENCES linea(id_linea)
 );
 
-INSERT INTO estacion_linea (id_estacion, id_linea)
-SELECT DISTINCT e.id_estacion, l.id_linea
-FROM afluencia_metro a
-JOIN estacion_info e ON a.estacion = e.nombre AND a.zona = e.zona
-JOIN linea l ON a.linea = l.nombre;
-
--- Crear tabla tipo_pago
+-- CREAR TABLA tipo_pago
 CREATE TABLE tipo_pago (
     id_pago BIGSERIAL PRIMARY KEY,
     nombre_tipo_pago VARCHAR(30) NOT NULL
 );
 
+-- CREAR TABLA afluencia
+CREATE TABLE afluencia (
+    id_afluencia BIGSERIAL PRIMARY KEY,
+    id_fecha BIGINT NOT NULL REFERENCES fecha_metro(id_fecha),
+    id_estacion BIGINT NOT NULL REFERENCES estacion_info(id_estacion),
+    id_pago BIGINT NOT NULL REFERENCES tipo_pago(id_pago),
+    afluencia INTEGER NOT NULL
+);
+
+-- INSERTAR DATOS EN fecha_metro
+INSERT INTO fecha_metro (fecha, anio, mes, dia_semana, tipo_dia, semana_del_anio)
+SELECT DISTINCT fecha, anio, mes, dia_semana, tipo_dia, semana_del_anio
+FROM afluencia_metro;
+
+-- INSERTAR DATOS EN estacion_info
+INSERT INTO estacion_info (nombre, zona)
+SELECT DISTINCT estacion, zona
+FROM afluencia_metro;
+
+-- INSERTAR DATOS EN linea
+INSERT INTO linea (nombre)
+SELECT DISTINCT linea
+FROM afluencia_metro;
+
+-- INSERTAR DATOS EN estacion_linea
+INSERT INTO estacion_linea (id_estacion, id_linea)
+SELECT DISTINCT
+    e.id_estacion,
+    l.id_linea
+FROM afluencia_metro a
+JOIN estacion_info e ON a.estacion = e.nombre AND a.zona = e.zona
+JOIN linea l ON a.linea = l.nombre;
+
+-- INSERTAR DATOS EN tipo_pago
 INSERT INTO tipo_pago (nombre_tipo_pago)
 SELECT DISTINCT tipo_pago
 FROM afluencia_metro;
 
--- Crear tabla afluencia (tabla de hechos)
-CREATE TABLE afluencia (
-    id_afluencia BIGSERIAL PRIMARY KEY,
-    id_fecha INTEGER NOT NULL REFERENCES fecha_metro(id_fecha),
-    id_estacion INTEGER NOT NULL REFERENCES estacion_info(id_estacion),
-    id_pago INTEGER NOT NULL REFERENCES tipo_pago(id_pago),
-    afluencia INTEGER NOT NULL
-);
-
+-- INSERTAR DATOS EN afluencia
 INSERT INTO afluencia (id_fecha, id_estacion, id_pago, afluencia)
 SELECT
     f.id_fecha,
