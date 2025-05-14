@@ -1,13 +1,14 @@
--- Descomposición de afluencia_metro en 4FN con claves artificiales
+-- SCRIPT SQL con tabla 'linea' para representar formalmente la relación muchos a muchos
 
 -- Eliminar tablas anteriores si existen
 DROP TABLE IF EXISTS afluencia;
 DROP TABLE IF EXISTS estacion_linea;
+DROP TABLE IF EXISTS linea;
 DROP TABLE IF EXISTS estacion_info;
 DROP TABLE IF EXISTS fecha_metro;
 DROP TABLE IF EXISTS tipo_pago;
 
--- Crear tabla fecha_metro, derivada de la columna fecha
+-- Crear tabla fecha_metro
 CREATE TABLE fecha_metro (
     id_fecha BIGSERIAL PRIMARY KEY,
     fecha DATE NOT NULL,
@@ -34,17 +35,28 @@ INSERT INTO estacion_info (nombre, zona)
 SELECT DISTINCT estacion, zona
 FROM afluencia_metro;
 
--- Crear tabla estacion_linea (relación multivaluada estación ↔ línea)
+-- Crear tabla linea (nueva entidad)
+CREATE TABLE linea (
+    id_linea BIGSERIAL PRIMARY KEY,
+    nombre VARCHAR(30) NOT NULL UNIQUE
+);
+
+INSERT INTO linea (nombre)
+SELECT DISTINCT linea
+FROM afluencia_metro;
+
+-- Crear tabla estacion_linea (tabla intermedia)
 CREATE TABLE estacion_linea (
     id_estacion_linea BIGSERIAL PRIMARY KEY,
     id_estacion INTEGER NOT NULL REFERENCES estacion_info(id_estacion),
-    linea VARCHAR(30) NOT NULL
+    id_linea INTEGER NOT NULL REFERENCES linea(id_linea)
 );
 
-INSERT INTO estacion_linea (id_estacion, linea)
-SELECT DISTINCT e.id_estacion, a.linea
+INSERT INTO estacion_linea (id_estacion, id_linea)
+SELECT DISTINCT e.id_estacion, l.id_linea
 FROM afluencia_metro a
-JOIN estacion_info e ON a.estacion = e.nombre AND a.zona = e.zona;
+JOIN estacion_info e ON a.estacion = e.nombre AND a.zona = e.zona
+JOIN linea l ON a.linea = l.nombre;
 
 -- Crear tabla tipo_pago
 CREATE TABLE tipo_pago (
@@ -65,7 +77,6 @@ CREATE TABLE afluencia (
     afluencia INTEGER NOT NULL
 );
 
--- Insertar registros en afluencia
 INSERT INTO afluencia (id_fecha, id_estacion, id_pago, afluencia)
 SELECT
     f.id_fecha,
