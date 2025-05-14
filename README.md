@@ -235,66 +235,45 @@ Todo el conjunto de consultas utilizadas para este análisis está documentado e
 
 **Parte D) – Normalización hasta Cuarta Forma Normal (4FN)**
 
-*Diseño intuitivo inicial*
 
-Antes de aplicar una normalización formal, se propuso una descomposición inicial basada en la organización del archivo original `afluencia_final_corregida.csv`. Esta versión inicial consideraba las siguientes entidades:
+1. Propuesta de descomposición Intuitiva
+   
+A partir del conjunto de datos, se identificaron atributos que podían clasificarse en cuatro entidades:fecha, estación, tipo de pago y afluencia. Con base en esta clasificación, se propuso una descomposición inicial compuesta por las siguientes entidades:
 
-- Una tabla `afluencia`, con claves foráneas hacia las demás tablas y la cantidad de afluencia.
-- Una tabla `fecha`, que incluía tanto la fecha completa como atributos derivados tales como año, mes, día de la semana, tipo de día y semana del año.
-- Una tabla `estacion`, donde se agrupaban el nombre de la estación, la línea y la zona geográfica.
-- Una tabla `tipo_pago`, con los distintos métodos de acceso al sistema.
+fecha_metro
 
-Este modelo inicial resultaba funcional, pero presentaba redundancias importantes:
+estacion_info
 
-- La fecha se repetía junto con sus atributos derivados, lo que generaba duplicación innecesaria.
-- La zona geográfica se repetía cada vez que se registraba una estación.
-- Algunas estaciones estaban asociadas a más de una línea, lo cual representa una dependencia multivaluada.
+tipo_pago
 
-El diagrama entidad-relación correspondiente a este diseño inicial se encuentra enl:
+afluencia
 
-proyectoFinal/ERD_inicial.png
+Se incluye el diagrama entidad-relación correspondiente al diseño intuitivo en el archivo:
+*ERD_intuitivo.pdf*
 
+2. Dependencias Funcionales y Multivaluadas y Normalización hasta Cuarta Forma Normal (4FN)
 
+La explicación a detalle se encentra en el archivo:
+*Normalizacion.pdf
+En la implementación final, se optó por crear una entidad formal llamada linea, y una tabla intermedia estacion_linea que relaciona id_estacion con id_linea, lo cual representa explícitamente la relación muchos a muchos entre estaciones y líneas, y mantiene el modelo en cuarta forma normal.
 
-*Dependencias funcionales y multivaluadas detectadas*
-
-Durante el análisis se identificaron las siguientes dependencias:
-
-- La columna `fecha` determinaba funcionalmente a los atributos `anio`, `mes`, `tipo_dia`, `dia_semana` y `semana_del_anio`. Esta dependencia se resolvió proyectando dichos atributos en una nueva entidad denominada `fecha_metro`.
-
-- El nombre de la estación determinaba funcionalmente su zona geográfica. En el conjunto de datos limpio, no se encontró ninguna estación registrada en más de una zona. Esta dependencia se resolvió agrupando ambos atributos en la entidad `estacion_info`.
-
-- La relación entre estación y línea era multivaluada, pues algunas estaciones están asociadas a más de una línea. Esta dependencia se descompuso mediante la creación de la tabla `nombre_linea`, que representa cada combinación única de estación y línea.
-
-- La columna `tipo_pago` corresponde a un catálogo de valores discretos. Por ello, fue separada en una entidad independiente para mantener consistencia y evitar repeticiones.
-
-
-
-*Proyecciones realizadas*
-
-Con base en las dependencias anteriores, se realizaron las siguientes proyecciones:
-
-- `fecha_metro`: En el conjunto original, cada registro de afluencia incluía la fecha completa junto con atributos derivados como año, mes, día de la semana, tipo de día y semana del año. Esto generaba duplicación innecesaria. Para resolverlo, se creó la entidad `fecha_metro`, donde cada fecha aparece una sola vez junto con sus atributos asociados. En la tabla`afluencia`, únicamente se conserva la llave foránea `id_fecha`.
-
-- `estacion_info`: De manera similar, se detectó que la zona geográfica de cada estación se repetía múltiples veces. Dado que cada estación tiene asociada una única zona, se proyectaron ambos atributos en una entidad separada llamada `estacion_info`, donde cada estación figura una sola vez. En la tabla `afluencia`, se mantiene únicamente la llave foránea `id_estacion`.
-
-- `nombre_linea`: La relación multivaluada entre estaciones y líneas se descompuso mediante la creación de esta entidad intermedia, que contiene una fila por cada combinación única de estación y línea.
-
-- `tipo_pago`: Este atributo representa un conjunto acotado de valores. Se definió como una tabla independiente para garantizar la integridad de los dato.
-
-- `afluencia`: Se mantiene como tabla, conectando mediante llavesforáneas a las demás entidades y registrando el número de pasajeros diarios.
-
-
-*Confirmación de cumplimiento de Cuarta Forma Normal (4FN)*
-
-Una vez aplicadas las proyecciones descritas, el modelo resultante elimina todas las dependencias funcionales parciales y transitivas, así como las dependencias multivaluadas. Cada entidad contiene atributos que dependen únicamente de su llave primaria, y no se repiten combinaciones de valores innecesarios. Por tanto, se concluye que el modelo final cumple con los requisitos de la Cuarta Forma Normal (4FN).
-
-
-### Diagrama entidad-relación final (modelo en 4FN)
-
-*Script SQL de descomposición a 4FN*
-
-El script que implementa la descomposición normalizada completa se encuentra disponible en el siguiente archivo:
-
+3. Scripts SQL de descomposición
+El script que contiene las instrucciones SQL para realizar la descomposición del modelo original hasta alcanzar la cuarta forma normal se encuentra en:
 Scripts/descomposicion_4FN.sql
+
+Este archivo incluye:
+
+La creación de las entidades resultantes,
+
+La asignación de identificadores artificiales como llaves primarias,
+
+Las relaciones mediante claves foráneas,
+
+Cuidados para evitar la generación de tuplas duplicadas.
+
+4. Diagrama ER final
+El diagrama entidad-relación correspondiente al modelo en cuarta forma normal (4FN) se encuentra en el archivo:
+ERD_4FN.pdf
+
+Este modelo refleja la separación adecuada de dependencias multivaluadas y funcionales.
 
