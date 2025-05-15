@@ -501,3 +501,25 @@ En esta sección se presentan los principales hallazgos obtenidos a partir de co
 | Tlahuac                  | 13,158     |
 | Zocalo/Tenochititlan     | 13,025     |
 | Pantitlan                | 12,487     |
+
+
+NOTA: El Script se encuentra en: Scripts/E_consultas_atributos_analiticos.sql
+
+**Hallazgos y relevancia**
+Los días laborales tienen más afluencia (5,334 vs. 3,667), lo que confirma que el uso del Metro es clave en la rutina diaria. Esto ayuda a enfocar recursos en estos días.
+
+La zona oriente es la más transitada, con más de 1.5 mil millones de usuarios. Debería ser prioritaria en mejoras y mantenimiento.
+
+La afluencia crece cada año, lo que muestra una recuperación postpandemia. Sirve para proyectar demanda futura.
+
+Octubre y noviembre son los meses con más uso. Saber esto permite anticipar periodos de alta demanda y ajustar la operación.
+
+El prepago es el método de pago más usado.
+
+Las estaciones terminales tienen mucha más afluencia que las intermedias. Sabiendo esto, sabemos que requieren más atención operativa.
+
+Algunas estaciones tienen alta variabilidad, lo que indica flujos irregulares y necesidad de monitoreo constante.
+
+Los días de quincena y fechas clave tienen picos pequeños, lo que ayuda a prevenir aglomeraciones si se gestiona de forma adecuada.
+
+Estos resultados aportan información valiosa para tomar decisiones sobre operación, mantenimiento y planeación en el Metro CDMX, con el fin de que los usuarios viajen cómodos.
