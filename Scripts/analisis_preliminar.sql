@@ -148,7 +148,7 @@ ORDER BY estacion,
         WHEN dia_semana = 'Sunday' THEN 7
     END;
     
---Columnas redundantes i.e. mes y fecha coiniden?, año y fecha coinciden?:
+--Columnas redundantes i.e. mes y fecha coinciden?, año y fecha coinciden?:
 SELECT DISTINCT mes, TO_CHAR(fecha, 'Month') AS mes_desde_fecha
 FROM afluencia_metro
 ORDER BY mes; --vemos que coincide
@@ -199,7 +199,23 @@ SELECT tipo_dia, COUNT(*) AS total FROM afluencia_metro GROUP BY tipo_dia ORDER 
 -- Por zona
 SELECT zona, COUNT(*) AS total FROM afluencia_metro GROUP BY zona ORDER BY total DESC;
 
+--verificar nulos por columna:
 
+SELECT 
+  SUM(CASE WHEN fecha IS NULL THEN 1 ELSE 0 END) AS nulos_fecha,
+  SUM(CASE WHEN mes IS NULL THEN 1 ELSE 0 END) AS nulos_mes,
+  SUM(CASE WHEN anio IS NULL THEN 1 ELSE 0 END) AS nulos_anio,
+  SUM(CASE WHEN linea IS NULL THEN 1 ELSE 0 END) AS nulos_linea,
+  SUM(CASE WHEN estacion IS NULL THEN 1 ELSE 0 END) AS nulos_estacion,
+  SUM(CASE WHEN tipo_pago IS NULL THEN 1 ELSE 0 END) AS nulos_tipo_pago,
+  SUM(CASE WHEN afluencia IS NULL THEN 1 ELSE 0 END) AS nulos_afluencia,
+  SUM(CASE WHEN dia_semana IS NULL THEN 1 ELSE 0 END) AS nulos_dia_semana,
+  SUM(CASE WHEN tipo_dia IS NULL THEN 1 ELSE 0 END) AS nulos_tipo_dia,
+  SUM(CASE WHEN semana_del_anio IS NULL THEN 1 ELSE 0 END) AS nulos_semana_del_anio,
+  SUM(CASE WHEN zona IS NULL THEN 1 ELSE 0 END) AS nulos_zona
+FROM afluencia_metro; --si sale 0 no hay valores nulos
+
+--verificar consistencia
 SELECT *
 FROM afluencia_metro
 WHERE afluencia < 0
