@@ -119,7 +119,17 @@ si no está en dicho formato, debemos hacer lo siguiente:
 - Damos click en Archivo--> Guardar como
 - En el campo "Tipo" hay que seleccionar **CSV UTF-8 (delimitado por comas)(.csv)**. Le asignas un nombre y lo guardas, en nuestro caso fue: afluencia_final_corregida.csv
 
-NOTA: En algunos casos, aunque el archivo esté en formato UTF-8, los caracteres aún se muestran de forma incorrecta. Por ello, realizamos una corrección manual utilizando la función Buscar y reemplazar en Excel, sustituyendo todos los caracteres afectados. Una vez corregidos, guardamos el archivo como: **CSV UTF-8 (delimitado por comas) (.csv)**.
+NOTA: En algunos casos, aunque el archivo esté en formato UTF-8, los caracteres aún se muestran de forma incorrecta. Por ello, realizamos una corrección manual utilizando la función Buscar y reemplazar en Excel, sustituyendo todos los caracteres afectados, en específico, estos fueron los cambios:
+ÃƒÂ	-i
+ÃƒÂ© - e
+i³ - o
+i¡-	a
+i© -	e
+i± -	ñ
+Ã	- A
+iº -	u
+
+Una vez corregidos, guardamos el archivo como: **CSV UTF-8 (delimitado por comas) (.csv)**.
 Para mayor comodidad del usuario, dejamos el archivo listo para los pasos posteriores en:
 Scripts/afluencia_final_corregida.csv
 
